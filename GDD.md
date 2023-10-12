@@ -1,4 +1,4 @@
-#ROUGELIKE GAME
+# ROUGELIKE GAME
 1. Ogólny zamysł gry
 - Postać bazowo posiada 100 pkt życia oraz 10 exp
 - Aby wydostać się z pomieszczenia gracz musi zabić wszystkie potwory znajdujące się w jego okolicy
