@@ -1,15 +1,17 @@
-# ROUGELIKE GAME
+# ROUGELIKE GAME - TANKS
 1. Ogólny zamysł gry
-- Postać bazowo posiada 100 pkt życia oraz 10 exp
-- Aby wydostać się z pomieszczenia gracz musi zabić wszystkie potwory znajdujące się w jego okolicy
-- Potwory mają różne wartości hp oraz nagrody za zabicie
-- Gracz za zabicie wroga otrzymuja adekwatną ilość exp
-- Za exp można ulepszyć postać np. dodać jej więcej hp(zregenetować się), ulepszyć ilość zadawanych obrażeń przez nią obrażeń
-- Trudność gry liniowo rośnie
-- Po wyjściu z lochu gracz nie może już do niego wrócić, stary się usuwa natomiast automatycznie powstaje nowy do którego może wejść
-- Potwory oznaczone są dużymi literami 
+- TANKS jest to gra przedstawiająca interesujący świat czołgów zmagających się pomiędzy sobą. Gracz będzie kontrolował czołg, rozwijał go oraz podejmował wyzwania eksplorując losowo generowany świat pełen wrogich jednostek i trudności.
 
-2. Mechanika gry
-- Gracz porusza się za pomocą strzałek
-- Aby otworzyć menu ulepszeń należy kliknąć ctrl 
-- Wybieranie ulepszeń wykonywane jest za pomocą wpisania odpowiedniej litery
+2. Rozgrywka
+- Celem gry jest przetrwanie jak największej ilości poziomów oraz pokonanie najtrudniejszego przeciwnika na końcu każdego z nich. Bohater będzie musiał odpowiednio zarządzać zasobami aby wystarczyły mu na całą rozgrywke.
+- Gracz porusza się oraz wykonuje manewry za pomocą W A S D ctrl oraz ENTER 
+- Gra odbywa się w losowo generowanych okopach, w których będą poruszać się czołgi oraz znajdować przeciwnicy o różnej trudności
+- Gracze będą mogli zbierać punkty doświadczenia i zdobywać nowe umiejętności lub ulepszenia dla swojego czołgu konieczne aby przetrwać dalsze etapy gry. Progresja będzie ważnym elementem rozgrywki, zachęcając graczy do eksploracji i rozwoju.
+- Po utracie wszystkich punktów wytrzymałości nie ma możliwości naprawy czołgu. Gracz traci wszystkie osiągniecią zdobyte do tego momentu i zaczyna grę od początku.
+
+- Aby przejść do następnej części okopu należy powstrzymać wszystkich przeciwników.
+- Czołgi mają różne wartości życia oraz zadawanych obrażeń. Nagrody za zniszczenie przeciwnika przyznawane są adekwatnie poziomu zaawansowania przeciwnika.
+- Za exp można ulepszyć postać np. dodać jej więcej hp(do poziomu startowego np. naprawiając opancerzenie). Można również zwiększyć ilość zadawanych obrażeń oraz ilość posiadanych pocisków.
+
+- Grafika przedstawiana jest za pomocą kodów ASCII 
+
