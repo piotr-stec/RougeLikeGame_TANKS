@@ -1,5 +1,6 @@
 import random
-import map
+import opponents_library
+
 
 class Actor:
     def __init__(self, x, y):
@@ -14,23 +15,21 @@ class Item(Actor):
 
 
 class Opponent(Actor):
-    def __init__(self, x, y, name, hp, avg_dmg):
+    def __init__(self, x, y, opponent_type: opponents_library.OpponentType):
         super().__init__(x, y)
         self.character = "%"
-        self.name = name
-        self.hp = hp
-        self.avg_dmg = avg_dmg
+        self.name, self.hp, self.avg_dmg = opponent_type.value
         self.armour = 0
 
     def info(self):
-        return "Name: "+str(self.name)+" Character: "+str(self.character)+" Position: "+str(self.x)+" "+str(self.y)+" "+"Health: "+str(self.hp)+" Avg_DMG: "+str(self.avg_dmg)
+        return "Name: "+str(self.name)+" Character: "+str(self.character)+" Position: "+str(self.x)+" "+str(self.y)+" Health: "+str(self.hp)+" Avg_DMG: "+str(self.avg_dmg)
 
     def take_damage(self, damage, game_map):
         actual_damage = damage - self.armour
         self.hp -= actual_damage
         if self.hp <= 0:
             game_map.delete_opponent(self)
-            print(f"{self.name} został pokonany!")
+            print(f"{self.name} DEFEATED!")
         else:
             print(f"{self.name} took {actual_damage} damage. Remaining HP: {self.hp}")
 
@@ -68,14 +67,14 @@ class Player(Actor):
         print("HEALING")
 
     def info(self):
-        return "Name: "+str(self.name)+" Character: "+str(self.character)+" Position: "+str(self.x)+" "+str(self.y)+" "+"Health: "+str(self.hp)+" Avg_DMG: "+str(self.avg_dmg)
+        return "Name: "+str(self.name)+" Character: "+str(self.character)+" Position: "+str(self.x)+" "+str(self.y)+" Health: "+str(self.hp)+" Avg_DMG: "+str(self.avg_dmg)
 
     def take_damage(self, damage):
         actual_damage = damage - self.armour
         self.hp -= actual_damage
         if self.hp <= 0:
-            print(f"{self.name} został pokonany - KONIEC GRY!")
-            raise Exception(f"{self.name} przegrałeś - KONIEC GRY")
+            print(f"{self.name} DEFEATED - KONIEC GRY!")
+            print(f"{self.name} przegrałeś - KONIEC GRY")
         else:
             print(f"{self.name} took {actual_damage} damage. Remaining HP: {self.hp}")
 
