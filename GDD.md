@@ -13,8 +13,18 @@
 
 - W walce liczy się przedewszystkim średnia ilość zadawanych obrażeń przez oponenta bądź gracza. Konkretna wartość zadanych obrażeń waha się od +25% do -25% i jest generowana losowo. Atak wykonywany jest w najbliższą istote i zadaje losową wartość obrażeń
 
-3. Sterowanie
+- Gracz posiada ekwipunek zawierający informacje dotyczące przechowywanej amunicji. Są dwa typy pocisków: GoldAmmo - zadaje 15% więcej obrażeń niż DefaultAmmo. Początkowo postać posiada 10 pocisków standardowych oraz 5 ulepszonych. W czasie rozgrywki musi zdobywać większe zasoby amynicji.
+
+3. Przeciwnicy
+- MS1 posiada 100 pkt hp oraz średni dmg na poziomie 25 nie stanowi większego zagrożenia dla gracza nawet na początkowym poziomie
+- T28 posiada 200 pkt hp oraz średni dmg na poziomie 45 nie stanowi większego zagrożenia dla gracza lecz może już wyrządzić mu szkodę
+- KV85 posiada 300 pkt hp oraz średni dmg na poziomie 60 jest z graczem w początkowym stanie równy 1:1 i szansa na jego zwycięstwo to 50%
+- IS3 posiada 400 pkt hp oraz średni dmg na poziomie 80 jest ogromnym zagrożeniem dla gracza ale jest szansa na pokonanie
+- IS7 posiada 800 pkt hp oraz średni dmg na poziomie 120 początkowy gracz nie ma z nim żadnych szans
+
+
+4. Sterowanie
 - Gracz porusza się oraz wykonuje manewry za pomocą W A S D ctrl oraz ENTER 
-4. Świat
+5. Świat
 - Gra odbywa się w losowo generowanych okopach, w których będą poruszać się czołgi oraz znajdować przeciwnicy o różnej trudności
 - Grafika przedstawiana jest za pomocą kodów ASCII 
