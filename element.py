@@ -20,7 +20,7 @@ class Floor():
 class DefaultAmmo():
     def __init__(self):
         self.name = "Default Ammo"
-        self.dmg_boost = 10
+        self.dmg_boost = 1
         self.quantity = 4
 
 
