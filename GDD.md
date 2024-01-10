@@ -13,6 +13,8 @@
 
 - W walce liczy się przedewszystkim średnia ilość zadawanych obrażeń przez oponenta bądź gracza. Konkretna wartość zadanych obrażeń waha się od +25% do -25% i jest generowana losowo. Atak wykonywany jest w najbliższą istote i zadaje losową wartość obrażeń
 
+- Gracz posiada ekwipunek zawierający informacje dotyczące przechowywanej amunicji. Są dwa typy pocisków: GoldAmmo - zadaje 15% więcej obrażeń niż DefaultAmmo. Początkowo postać posiada 10 pocisków standardowych oraz 5 ulepszonych. W czasie rozgrywki musi zdobywać większe zasoby amynicji.
+
 3. Przeciwnicy
 - MS1 posiada 100 pkt hp oraz średni dmg na poziomie 25 nie stanowi większego zagrożenia dla gracza nawet na początkowym poziomie
 - T28 posiada 200 pkt hp oraz średni dmg na poziomie 45 nie stanowi większego zagrożenia dla gracza lecz może już wyrządzić mu szkodę
