@@ -1,11 +1,20 @@
 import random
 import opponents_library
+from element import GoldAmmo, DefaultAmmo
 
 
 class Actor:
     def __init__(self, x, y):
         self.x = x
         self.y = y
+        self.ammo_inventory = [DefaultAmmo(), GoldAmmo()]
+        self.selected_ammo = self.ammo_inventory[0]
+
+    def switch_ammo(self):
+        if self.selected_ammo == DefaultAmmo:
+            self.selected_ammo = self.ammo_inventory[1]
+        else:
+            self.selected_ammo = self.ammo_inventory[0]
 
 
 class Item(Actor):
@@ -22,10 +31,14 @@ class Opponent(Actor):
         self.armour = 0
 
     def info(self):
-        return "Name: "+str(self.name)+" Character: "+str(self.character)+" Position: "+str(self.x)+" "+str(self.y)+" Health: "+str(self.hp)+" Avg_DMG: "+str(self.avg_dmg)
+        return "Name: " + str(self.name) + " Character: " + str(self.character) + " Position: " + str(
+            self.x) + " " + str(self.y) + " Health: " + str(self.hp) + " Avg_DMG: " + str(
+            self.avg_dmg) + " Default Ammo quantity: " + str(
+            self.ammo_inventory[0].quantity) + " Gold Ammo quantity: " + str(self.ammo_inventory[1].quantity)
 
     def take_damage(self, damage, game_map):
         actual_damage = damage - self.armour
+        self.armour = self.armour * 0.9
         self.hp -= actual_damage
         if self.hp <= 0:
             game_map.delete_opponent(self)
@@ -34,7 +47,8 @@ class Opponent(Actor):
             print(f"{self.name} took {actual_damage} damage. Remaining HP: {self.hp}")
 
     def attack_enemy(self, enemy):
-        damage = random.randint(int(0.75*self.avg_dmg), int(1.25*self.avg_dmg))
+        damage = random.randint(int(0.75 * self.avg_dmg), int(1.25 * self.avg_dmg)) * self.selected_ammo.dmg_boost
+        self.selected_ammo.quantity -= 1
         print(f"{self.name} attacks {enemy.name} for {damage} damage.")
         enemy.take_damage(damage)
 
@@ -67,10 +81,12 @@ class Player(Actor):
         print("HEALING")
 
     def info(self):
-        return "Name: "+str(self.name)+" Character: "+str(self.character)+" Position: "+str(self.x)+" "+str(self.y)+" Health: "+str(self.hp)+" Avg_DMG: "+str(self.avg_dmg)
+        return "Name: " + str(self.name) + " Character: " + str(self.character) + " Position: " + str(
+            self.x) + " " + str(self.y) + " Health: " + str(self.hp) + " Avg_DMG: " + str(self.avg_dmg)
 
     def take_damage(self, damage):
         actual_damage = damage - self.armour
+        self.armour = self.armour * 0.9
         self.hp -= actual_damage
         if self.hp <= 0:
             print(f"{self.name} DEFEATED - KONIEC GRY!")
@@ -79,8 +95,7 @@ class Player(Actor):
             print(f"{self.name} took {actual_damage} damage. Remaining HP: {self.hp}")
 
     def attack_enemy(self, enemy, game_map):
-        damage = random.randint(int(0.75*self.avg_dmg), int(1.25*self.avg_dmg))
+        damage = random.randint(int(0.75 * self.avg_dmg), int(1.25 * self.avg_dmg)) * self.selected_ammo.dmg_boost
+        self.selected_ammo.quantity -= 1
         print(f"{self.name} attacks {enemy.name} for {damage} damage.")
         enemy.take_damage(damage, game_map)
-
-

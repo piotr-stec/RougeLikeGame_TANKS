@@ -13,3 +13,22 @@ class Floor():
     def __init__(self):
         self.name = "floor"
         self.character = "_"
+
+
+
+
+class DefaultAmmo():
+    def __init__(self):
+        self.name = "Default Ammo"
+        self.dmg_boost = 10
+        self.quantity = 4
+
+
+class GoldAmmo():
+    def __init__(self):
+        self.name = "Gold Ammo"
+        self.dmg_boost = 1.15
+        self.quantity = 5
+
+
+

@@ -164,6 +164,8 @@ def test2():
 
     mapaTest.set_player(player)
 
+
+
     for tank in tanks:
         mapaTest.set_opponent(tank)
         mapaTest.player.hp = 300
@@ -173,6 +175,7 @@ def test2():
                 print(f"{player.name} win against {tank.name} with {player.hp} left")
                 break
             tank.attack_enemy(player)
+            print(tank.info())
             if(player.hp <=0):
                 print(f"{tank.name} win against {player.name} with {tank.hp} left")
                 break
