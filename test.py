@@ -166,11 +166,16 @@ def test2():
 
 
 
+
     for tank in tanks:
         mapaTest.set_opponent(tank)
         mapaTest.player.hp = 300
         while(tank in mapaTest.opponents and player.hp > 0):
+            if(player.selected_ammo.quantity==0 and player.selected_ammo.name == "Default Ammo"):
+                player.switch_ammo(2)
             player.attack_enemy(tank, mapaTest)
+            print(player.info())
+
             if(tank not in mapaTest.opponents):
                 print(f"{player.name} win against {tank.name} with {player.hp} left")
                 break

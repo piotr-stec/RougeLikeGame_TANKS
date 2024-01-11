@@ -21,7 +21,7 @@ class DefaultAmmo():
     def __init__(self):
         self.name = "Default Ammo"
         self.dmg_boost = 1
-        self.quantity = 4
+        self.quantity = 5
 
 
 class GoldAmmo():
