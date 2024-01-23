@@ -12,7 +12,7 @@ class Wall():
 class Floor():
     def __init__(self):
         self.name = "floor"
-        self.character = "_"
+        self.character = " "
 
 
 

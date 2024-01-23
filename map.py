@@ -1,6 +1,7 @@
 from actors import Player, Item, Opponent
 import element as el
-
+import random
+import curses
 
 class RMap:
     map = [[]]
@@ -37,6 +38,7 @@ class RMap:
         try:
             if self.check_field(opp.x, opp.y):
                 self.opponents.append(opp)
+                self.map[opp.x][opp.y] = opp
             else:
                 raise Exception(f"Field {opp.x} {opp.y} is occupied or off the map")
         except Exception as e:
@@ -79,24 +81,27 @@ class RMap:
 
     def check_field(self, x, y):
         try:
-            return self.map[x][y].character == "_"
+            return self.map[x][y].character == " "
         except IndexError:
-            return False
+            print("Fild is not available")
 
-    def printMap(self):
-        for row in self.map:
-            for element in row:
-                if element.character == "_":
-                    print(" ", end="")
+
+    def printMap(self, stdscr):
+        for i, row in enumerate(self.map):
+            for j, element in enumerate(row):
+                if isinstance(element, Player):
+                    stdscr.addch(element.x, element.y, element.character)
+                elif isinstance(element, Opponent):
+                    stdscr.addch(element.x, element.y, element.character)
                 else:
-                    print(element.character, end="")
-            print()
+                    stdscr.addch(i, j, element.character)
+            stdscr.addch("\n")
 
 
-    def show_enemies(self):
+    def show_enemies(self,stdscr):
         print("OPPONENTS: ")
         for opp in self.opponents:
-            print(opp.info())
+            stdscr.addstr(opp.info())
 
 
 

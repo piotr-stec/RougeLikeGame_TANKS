@@ -1,7 +1,7 @@
 import random
 import opponents_library
 from element import GoldAmmo, DefaultAmmo
-
+import curses
 
 class Actor:
     def __init__(self, x, y):
@@ -11,9 +11,9 @@ class Actor:
         self.selected_ammo = self.ammo_inventory[0]
 
     def switch_ammo(self, AmmoNumber):
-        if AmmoNumber == 1:
+        if AmmoNumber == "1":
             self.selected_ammo = self.ammo_inventory[0]
-        elif (AmmoNumber == 2):
+        elif (AmmoNumber == "2"):
             self.selected_ammo = self.ammo_inventory[1]
 
 
@@ -84,11 +84,9 @@ class Player(Actor):
         self.hp += 50
         print("HEALING")
 
-    def info(self):
-        return "Name: " + str(self.name) + " Character: " + str(self.character) + " Position: " + str(
-            self.x) + " " + str(self.y) + " Health: " + str(self.hp) + " Avg_DMG: " + str(self.avg_dmg) \
-               + " Selected Ammo: " + str(self.selected_ammo.name) + " | Default Ammo quantity: " + str(
-            self.ammo_inventory[0].quantity) + " Gold Ammo quantity: " + str(self.ammo_inventory[1].quantity)
+    def info(self, stdscr):
+        stdscr.addstr("Health: " + str(self.hp) + " Avg_DMG: " + str(self.avg_dmg * self.selected_ammo.dmg_boost) \
+               + " Selected Ammo: " + str(self.selected_ammo.name))
 
     def take_damage(self, damage):
         actual_damage = damage - self.armour
