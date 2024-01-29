@@ -38,28 +38,29 @@ class RMap:
         for i in range(8):
             # 0-5 HEALING 6 - 10 GOLD AMMO 11-20 DEFAULT
             choice = random.randint(1, 20)
-            quantity = random.randint(1, 3)
+            quantity_default = random.randint(LVL, LVL+6)
+            quantity_gold = random.randint(LVL-1, LVL+2)
             if choice <= 5:
                 random_x = random.randint(1, self.size_x - 2)
                 random_y = random.randint(1, self.size_y - 2)
                 while not self.check_field(random_x, random_y):
                     random_x = random.randint(1, self.size_x - 2)
                     random_y = random.randint(1, self.size_y - 2)
-                new_item = el.Healing(50 + (5*LVL), random_x, random_y)
+                new_item = el.Healing(50 + (10 * LVL), random_x, random_y)
             if 5 < choice <= 10:
                 random_x = random.randint(1, self.size_x - 2)
                 random_y = random.randint(1, self.size_y - 2)
                 while not self.check_field(random_x, random_y):
                     random_x = random.randint(1, self.size_x - 2)
                     random_y = random.randint(1, self.size_y - 2)
-                new_item = el.GoldAmmo(quantity, random_x, random_y)
+                new_item = el.GoldAmmo(quantity_gold, random_x, random_y)
             if 10 < choice <= 20:
                 random_x = random.randint(1, self.size_x - 2)
                 random_y = random.randint(1, self.size_y - 2)
                 while not self.check_field(random_x, random_y):
                     random_x = random.randint(1, self.size_x - 2)
                     random_y = random.randint(1, self.size_y - 2)
-                new_item = el.DefaultAmmo(quantity, random_x, random_y)
+                new_item = el.DefaultAmmo(quantity_default, random_x, random_y)
 
             self.items.append(new_item)
             self.map[new_item.x][new_item.y] = new_item
@@ -99,13 +100,13 @@ class RMap:
         else:
             self.opponents_types = opponents_library.OpponentLvl1.opponentlv1
 
-    def set_player(self, hp_1, dmg, LVL):
+    def set_player(self, hp_1, dmg, LVL, DefaultAmmo, GoldAmmo):
         random_x = random.randint(1, self.size_x - 2)
         random_y = random.randint(1, self.size_y - 2)
         while self.check_field(random_x, random_y) == False:
             random_x = random.randint(1, self.size_x - 2)
             random_y = random.randint(1, self.size_y - 2)
-        self.player = Player(random_x, random_y, "player_tank", hp_1, dmg, LVL)
+        self.player = Player(random_x, random_y, "player_tank", hp_1, dmg, LVL, DefaultAmmo, GoldAmmo)
         self.map[self.player.x][self.player.y] = self.player
 
     def update_player_pos(self, player: Player):
@@ -166,7 +167,7 @@ class RMap:
         else:
             raise Exception("Opponent not found in the map")
 
-    def find_opponent_in_range(self, distance=1):
+    def find_opponent_in_range2(self, distance=1):
         for opponent in self.opponents:
             if (
                     abs(self.player.x - opponent.x) <= distance and
@@ -174,6 +175,47 @@ class RMap:
             ):
                 return opponent
         return None
+
+    def find_opponent_in_range(self, distance):
+        for opponent in self.opponents:
+            if (
+                    abs(self.player.x - opponent.x) <= distance and
+                    abs(self.player.y - opponent.y) <= distance
+            ):
+                if (self.player.x == opponent.x or self.player.y == opponent.y) and \
+                        self.check_path_clear(self.player, opponent):
+                    return opponent
+
+        return None
+
+    def find_player_in_range(self):
+        for opponent in self.opponents:
+            if (
+                    abs(self.player.x - opponent.x) <= opponent.range and
+                    abs(self.player.y - opponent.y) <= opponent.range
+            ):
+                if (self.player.x == opponent.x or self.player.y == opponent.y) and \
+                        self.check_path_clear(self.player, opponent):
+                    return opponent
+
+        return None
+
+    def check_path_clear(self, start, end):
+        # Sprawdź czy na drodze między startem a końcem nie ma ściany
+        if start.x == end.x:
+            # Poruszamy się wzdłuż osi Y
+            step_y = 1 if start.y < end.y else -1
+            for y in range(start.y + step_y, end.y, step_y):
+                if isinstance(self.map[start.x][y], el.Wall):
+                    return False
+        elif start.y == end.y:
+            # Poruszamy się wzdłuż osi X
+            step_x = 1 if start.x < end.x else -1
+            for x in range(start.x + step_x, end.x, step_x):
+                if isinstance(self.map[x][start.y], el.Wall):
+                    return False
+
+        return True
 
     def find_item_in_range(self, distance=1):
         for it in self.items:
@@ -280,15 +322,77 @@ class RMap:
                 else:
                     stdscr.addch(i, j, element.character, curses.color_pair(3))
             stdscr.addch('\n')
+    def show_opponents(self):
+        message = "OPPONENT TANKS ON MAP:\n"
+        for opp in self.opponents:
+            message += opp.info()
+        return message
 
-    def display_message(self, message, win):
+    def game_items_list(self):
+        message = ("GAME ITEMS:\nD - Default Ammo - Gives you random amount of ammo\nG - Gives you random amount of "
+                   "Gold ammo with better dmg\nH - Healing - Gives you extra hp points")
+        return message
+    def display_message(self, message, win, pair):
+        curses.init_pair(1, curses.COLOR_GREEN, curses.COLOR_BLACK)
+        curses.init_pair(2, curses.COLOR_RED, curses.COLOR_BLACK)
+
+        win.clear()
+        win.addstr(message, curses.color_pair(pair) | curses.A_BOLD)
+        win.addch('\n')
+        win.refresh()
+        key1 = ""
+
+        while(key1!=ord('x') and key1!=ord('q')):
+            key1 = win.getch()
+            if key1 == ord('e'):
+                win.clear()
+                win.addstr(str(self.player.equipment_info()), curses.color_pair(1) | curses.A_BOLD)
+                win.addstr("B - BACK", curses.color_pair(4) | curses.A_BOLD)
+                win.refresh()
+            elif key1 == ord('o'):
+                win.clear()
+                win.addstr(str(self.show_opponents()), curses.color_pair(2) | curses.A_BOLD)
+                win.addstr("B - BACK", curses.color_pair(4) | curses.A_BOLD)
+                win.refresh()
+
+            elif key1 == ord('i'):
+                win.clear()
+                win.addstr(str(self.player.equipment_info()), curses.color_pair(1) | curses.A_BOLD)
+                win.addstr("B - BACK", curses.color_pair(4) | curses.A_BOLD)
+                win.refresh()
+            if key1 == ord('b'):
+                win.clear()
+                win.addstr(message, curses.color_pair(pair) | curses.A_BOLD)
+                win.addch('\n')
+                win.refresh()
+                # key1 = win.getch()
+
         win.clear()
         win.refresh()
-        win.addstr(message, curses.A_BOLD)
-        win.addch('\n')
-        win.getch()
+        if key1 == ord('q'):
+            return True
+        else:
+            return False
 
-    def show_enemies(self, stdscr):
-        # print("OPPONENTS: ")
-        for opp in self.opponents:
-            stdscr.addstr(opp.info())
+
+    def display_message2(self, message, win, pair):
+        curses.init_pair(1, curses.COLOR_GREEN, curses.COLOR_BLACK)
+        curses.init_pair(2, curses.COLOR_RED, curses.COLOR_BLACK)
+
+        win.clear()
+        win.refresh()
+        win.addstr(message, curses.color_pair(pair) | curses.A_BOLD)
+        win.addch('\n')
+
+
+
+    def game_instruction(self, win, pair):
+        message = "GAME INSTRUCTION:\nI - Items Characters\nE - Equipment\nO - Opponent Tanks\nC - Collect Item\nMoving " \
+                  "keys: w, a, s, d\nQ - Quit Game\nX - Exit "
+        return self.display_message(message, win, pair)
+
+
+
+    def show_messages(self, message, stdscr):
+        stdscr.addstr(message)
+
