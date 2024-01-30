@@ -16,16 +16,13 @@ class Floor():
 
 
 class Healing():
-    def __init__(self,health_points, x, y):
+    def __init__(self, health_points, x, y):
         self.x = x
         self.y = y
         self.health_points = health_points
         self.name = "Healing Potion"
         self.info = f"Healing Potion - {self.health_points} hp points"
         self.character = 'H'
-
-
-
 
 
 class DefaultAmmo():
@@ -48,7 +45,3 @@ class GoldAmmo():
         self.quantity = quantity
         self.name = "Gold Ammo"
         self.info = f"Gold Ammo - quantity {self.quantity}"
-
-
-
-

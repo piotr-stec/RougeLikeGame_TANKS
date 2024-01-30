@@ -22,15 +22,31 @@ def test3(stdscr):
     mapaTest.set_items(1)
     flag_win = False
     next_lvl = False
-    opponent_in_range_flag = True
     display_first_time = True
-    end_game = False
+    starting_screen = ("\t\t\tWitaj w grze TANKS\n\n"
+                       "Zasady oraz instrukcja gry: \n"
+                       "\n\t-Twoim zadaniem jest pokonanie wszystkich przeciwników znajdujących się na mapie\n"
+                       "\n\t-Gdy pokonasz wszystkie czołgi przeciwnika naciśnij przycisk N aby przejść do kolejnego etapu\n"
+                       "\nOznaczenia na mapie:\n"
+                       "\n\t-@ - Gracz\n"
+                       "\n\t-M T K I O - CZOŁGI PRZECIWNIKA: MS1, T28, KV85, IS3, OBJ277\n"
+                       "\n\t-H - Zestaw naprawczy dodający hp\n"
+                       "\n\t-D - Amunicja podstawowa\n"
+                       "\n\t-G - Amunicja złota zadająca 15% więcej obrażeń\n"
+                       "\nKlawisze w grze:\n"
+                       "\n\t-W A S D - poruszanie się gracza po mapie\n"
+                       "\n\t-ENTER - atak przeciwnika\n"
+                       "\n\t-1/2 - zmiana amunicji na Default(1) lub Gold(2)\n"
+                       "\n\t-c - podnoszenie przedmiotów znajdujących się na mapie\n"
+                       "\n\t-n - przejdź do następnego poziomu\n"
+                       "\n\t-i - menu gry\n"
+                       "\nABY ROZPOCZĄĆ GRE NACIŚNIJ DOWOLNY PRZYCISK")
     while (True):
-        # stdscr.clear()
         win.clear()
         if display_first_time:
-            mapaTest.printMap(stdscr)
-            mapaTest.show_messages(mapaTest.player.info(), stdscr)
+            curses.init_pair(1, curses.COLOR_GREEN, curses.COLOR_BLACK)
+
+            stdscr.addstr(starting_screen, curses.color_pair(1)|curses.A_BOLD)
             display_first_time = not display_first_time
 
         key = stdscr.getkey()
@@ -41,7 +57,6 @@ def test3(stdscr):
         else:
             mapaTest.printMap(stdscr)
             mapaTest.show_messages(mapaTest.player.info(), stdscr)
-
             if key in ['w', 'a', 's', 'd']:
                 mapaTest.player.move_player(key)
                 if mapaTest.check_field(mapaTest.player.x, mapaTest.player.y):
@@ -57,20 +72,13 @@ def test3(stdscr):
 
             if opponent_in_range:
                 opponent_in_range_flag = True
-                # mapaTest.display_message("OPPONENT IN RANGE PRESS ENTER", win, 1)
             else:
                 opponent_in_range_flag = False
 
             if opponent_in_range_flag and not next_lvl:
                 curses.init_pair(1, curses.COLOR_GREEN, curses.COLOR_BLACK)
-                # mapaTest.printMap(stdscr)
                 stdscr.addstr("OPPONENT IN RANGE PRESS ENTER\n", curses.color_pair(1))
                 stdscr.refresh()
-            # elif not opponent_in_range_flag and not next_lvl:
-            #     stdscr.clear()
-            #     mapaTest.printMap(stdscr)
-            #     mapaTest.show_messages(mapaTest.player.info(), stdscr)
-            #     stdscr.refresh()
 
             if key == 'n' and next_lvl:
                 stdscr.clear()
@@ -78,7 +86,8 @@ def test3(stdscr):
                 mapaTest.player.LVL += 1
                 next_lvl = False
                 mapaTest.generate_map(20)
-                mapaTest.set_player(mapaTest.player.hp+mapaTest.player.hp*0.3, mapaTest.player.avg_dmg + mapaTest.player.LVL*10, mapaTest.player.LVL,
+                mapaTest.set_player(mapaTest.player.hp + mapaTest.player.hp * 0.3,
+                                    mapaTest.player.avg_dmg + mapaTest.player.LVL * 10, mapaTest.player.LVL,
                                     mapaTest.player.ammo_inventory[0].quantity,
                                     mapaTest.player.ammo_inventory[1].quantity)
                 mapaTest.set_opponents_BY_LVL(mapaTest.player.LVL)
@@ -86,7 +95,7 @@ def test3(stdscr):
                 mapaTest.set_items(mapaTest.player.LVL)
 
             if not mapaTest.opponents:
-                if (mapaTest.player.LVL > 8):
+                if mapaTest.player.LVL > 8:
                     flag_win = True
                     stdscr.clear()
                     mapaTest.printMap(stdscr)
@@ -127,14 +136,10 @@ def test3(stdscr):
                 stdscr.refresh()
                 mapaTest.display_message2(f"COLLECTED ITEM: {it1.info}", win, 1)
 
-
-
-            if (mapaTest.player.hp <= 0):
+            if mapaTest.player.hp <= 0:
                 break
 
             mapaTest.move_opponents()
-
-
 
         if next_lvl:
             curses.init_pair(1, curses.COLOR_GREEN, curses.COLOR_BLACK)
@@ -148,7 +153,7 @@ def test3(stdscr):
         stdscr.refresh()
 
     win.clear()
-    if (flag_win):
+    if flag_win:
         curses.init_pair(1, curses.COLOR_GREEN, curses.COLOR_BLACK)
         stdscr.clear()
         stdscr.addstr("         WYGRAŁEŚ!!!!!!!", curses.color_pair(2))
@@ -163,10 +168,6 @@ def test3(stdscr):
         stdscr.refresh()
         stdscr.getkey()
 
-    # test1()
-
-
-# test2()
 
 if __name__ == "__main__":
     curses.wrapper(test3)

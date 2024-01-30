@@ -18,22 +18,6 @@ class RMap:
         self.size_x = size_x
         self.size_y = size_y
 
-    def load(self):
-        for item in self.items:
-            if self.check_field(item.x, item.y):
-                self.map[item.x][item.y] = item
-            else:
-                raise Exception(f"Field {item.x} {item.y} is occupied")
-        for opp in self.opponents:
-            if self.check_field(opp.x, opp.y):
-                self.map[opp.x][opp.y] = opp
-            else:
-                raise Exception(f"Field {opp.x} {opp.y} is occupied")
-        # if self.check_field(self.player.x, self.player.y):
-        #     self.map[self.player.x][self.player.y] = self.player.character
-        # else:
-        #     raise Exception(f"Field {self.player.x} {self.player.y} is occupied")
-
     def set_items(self, LVL):
         for i in range(8):
             # 0-5 HEALING 6 - 10 GOLD AMMO 11-20 DEFAULT
@@ -201,15 +185,12 @@ class RMap:
         return None
 
     def check_path_clear(self, start, end):
-        # Sprawdź czy na drodze między startem a końcem nie ma ściany
         if start.x == end.x:
-            # Poruszamy się wzdłuż osi Y
             step_y = 1 if start.y < end.y else -1
             for y in range(start.y + step_y, end.y, step_y):
                 if isinstance(self.map[start.x][y], el.Wall):
                     return False
         elif start.y == end.y:
-            # Poruszamy się wzdłuż osi X
             step_x = 1 if start.x < end.x else -1
             for x in range(start.x + step_x, end.x, step_x):
                 if isinstance(self.map[x][start.y], el.Wall):
@@ -257,7 +238,7 @@ class RMap:
 
         for i in range(max(0, center_x - square_size), min(rows, center_x + square_size + 1)):
             for j in range(max(0, center_y - square_size), min(cols, center_y + square_size + 1)):
-                if (i == 0 or j == 0 or i == self.size_x - 1 or j == self.size_y - 1):
+                if i == 0 or j == 0 or i == self.size_x - 1 or j == self.size_y - 1:
                     pass
                 else:
                     region_to_replace.add((i, j))
@@ -329,8 +310,7 @@ class RMap:
         return message
 
     def game_items_list(self):
-        message = ("GAME ITEMS:\nD - Default Ammo - Gives you random amount of ammo\nG - Gives you random amount of "
-                   "Gold ammo with better dmg\nH - Healing - Gives you extra hp points")
+        message = ("GAME ITEMS:\nD - Default Ammo\nG - Gold Ammo\nH - Healing - extra HP points\n")
         return message
     def display_message(self, message, win, pair):
         curses.init_pair(1, curses.COLOR_GREEN, curses.COLOR_BLACK)
@@ -357,7 +337,7 @@ class RMap:
 
             elif key1 == ord('i'):
                 win.clear()
-                win.addstr(str(self.player.equipment_info()), curses.color_pair(1) | curses.A_BOLD)
+                win.addstr(str(self.game_items_list()), curses.color_pair(1) | curses.A_BOLD)
                 win.addstr("B - BACK", curses.color_pair(4) | curses.A_BOLD)
                 win.refresh()
             if key1 == ord('b'):
