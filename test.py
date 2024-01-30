@@ -57,6 +57,8 @@ def test3(stdscr):
         else:
             mapaTest.printMap(stdscr)
             mapaTest.show_messages(mapaTest.player.info(), stdscr)
+            opp2 = mapaTest.find_player_in_range()
+
             if key in ['w', 'a', 's', 'd']:
                 mapaTest.player.move_player(key)
                 if mapaTest.check_field(mapaTest.player.x, mapaTest.player.y):
@@ -128,6 +130,7 @@ def test3(stdscr):
                 opp1 = mapaTest.find_player_in_range()
                 opp1.attack_player(mapaTest.player, stdscr)
 
+
             if key == 'c' and mapaTest.find_item_in_range():
                 it1 = mapaTest.find_item_in_range()
                 mapaTest.collect_item(it1)
@@ -138,8 +141,12 @@ def test3(stdscr):
 
             if mapaTest.player.hp <= 0:
                 break
+            if not opp2:
+                mapaTest.move_opponents()
+            else:
+                if key in ['w', 'a', 's', 'd']:
+                    mapaTest.move_opp_in_fight(opp2, key)
 
-            mapaTest.move_opponents()
 
         if next_lvl:
             curses.init_pair(1, curses.COLOR_GREEN, curses.COLOR_BLACK)

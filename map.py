@@ -126,6 +126,23 @@ class RMap:
             opp.y -= 1
         elif key == "d":
             opp.y += 1
+    def move_opp_in_fight(self, opp, key):
+        opp.prev_x = opp.x
+        opp.prev_y = opp.y
+        if key == "w":
+            opp.x -= 1
+        elif key == "s":
+            opp.x += 1
+        elif key == "a":
+            opp.y -= 1
+        elif key == "d":
+            opp.y += 1
+        if self.check_field(opp.x, opp.y):
+            self.map[opp.x][opp.y] = opp
+            self.map[opp.prev_x][opp.prev_y] = el.Floor()
+        else:
+            opp.x = opp.prev_x
+            opp.y = opp.prev_y
 
     def move_opponents(self):
         for opp in self.opponents:
