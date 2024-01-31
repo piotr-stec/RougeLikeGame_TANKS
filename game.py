@@ -23,6 +23,8 @@ def test3(stdscr):
     flag_win = False
     next_lvl = False
     display_first_time = True
+    display_for_next_lvl = False
+
     starting_screen = ("\t\t\tWitaj w grze TANKS\n\n"
                        "Zasady oraz instrukcja gry: \n"
                        "\n\t-Twoim zadaniem jest pokonanie wszystkich przeciwników znajdujących się na mapie\n"
@@ -49,10 +51,16 @@ def test3(stdscr):
             stdscr.addstr(starting_screen, curses.color_pair(1)|curses.A_BOLD)
             display_first_time = not display_first_time
 
+        if display_for_next_lvl:
+            curses.init_pair(1, curses.COLOR_GREEN, curses.COLOR_BLACK)
+            mapaTest.printMap(stdscr)
+            mapaTest.show_messages(mapaTest.player.info(), stdscr)
+            display_for_next_lvl = not display_for_next_lvl
+
         key = stdscr.getkey()
         stdscr.clear()
 
-        if (flag_win):
+        if flag_win:
             break
         else:
             mapaTest.printMap(stdscr)
@@ -84,12 +92,12 @@ def test3(stdscr):
 
             if key == 'n' and next_lvl:
                 stdscr.clear()
-                display_first_time = True
+                display_for_next_lvl = True
                 mapaTest.player.LVL += 1
                 next_lvl = False
                 mapaTest.generate_map(20)
                 mapaTest.set_player(mapaTest.player.hp + mapaTest.player.hp * 0.3,
-                                    mapaTest.player.avg_dmg + mapaTest.player.LVL * 10, mapaTest.player.LVL,
+                                    mapaTest.player.avg_dmg + mapaTest.player.LVL * 7, mapaTest.player.LVL,
                                     mapaTest.player.ammo_inventory[0].quantity,
                                     mapaTest.player.ammo_inventory[1].quantity)
                 mapaTest.set_opponents_BY_LVL(mapaTest.player.LVL)

@@ -2,11 +2,11 @@ from enum import Enum
 
 
 class OpponentType(Enum):
-    MS1 = ('M', "MS1", 100, 25, 3)
-    T28 = ('T', "T28", 200, 45, 4)
-    KV85 = ('K', "KV85", 300, 60, 5)
-    IS3 = ('I', "IS3", 400, 80, 6)
-    O277 = ('O', "O277", 800, 120, 7)
+    MS1 = ('M', "MS1", 100, 20, 3)
+    T28 = ('T', "T28", 200, 40, 4)
+    KV85 = ('K', "KV85", 300, 55, 5)
+    IS3 = ('I', "IS3", 400, 70, 6)
+    O277 = ('O', "O277", 800, 90, 7)
 class OpponentLvl1:
     opponentlv1 = [OpponentType.MS1, OpponentType.MS1, OpponentType.MS1, OpponentType.MS1, OpponentType.MS1]
 
