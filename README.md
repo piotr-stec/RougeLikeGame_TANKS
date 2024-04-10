@@ -5,6 +5,6 @@ Konsolowa gra rougelike imitująca świat czołgów przedstawiona za pomocą cur
 2. Otwórz terminal w pełnym oknie
 3. Uruchom plik game.py - python3 game.py
 4. Ciesz się rozgrywką!
-
+### Szczegółowe informacje dotyczące gry znajdują się w GDD
 
 
